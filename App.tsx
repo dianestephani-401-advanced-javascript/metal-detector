@@ -1,62 +1,65 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Dimensions, Image, Animated, PanResponder, AccessibilityInfo } from 'react-native';
 import { SafeAreaProvider, withSafeAreaInsets } from 'react-native-safe-area-context';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Container, Content } from 'native-base';
-import Swiper from 'react-native-swiper';
 
+//Default imports
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
-//This is my stylesheet for each page, from YouTube 
-const styles = StyleSheet.create({
-  slideDefault: {
-    flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB'
-  },
+//Screen height and width
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
-  text: {
-    color: 'white',
-    fontSize: 30,
-    fontWeight: 'bold'
-  }
-})
+//User photos, possibly props
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+const Users = [
+  { id: "1", uri: require('./assets/images/Ozzy-Osbourne.jpg')},
+  { id: "2", uri: require('./assets/images/kerry-king-slayer.jpg')},
+  { id: "3", uri: require('./assets/images/dave-mustaine-megadeth.jpg')},
+];
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+
+export default class App extends React.Component {
+    
+  render(){  
     return (
-      // <SafeAreaProvider>
-      //   <Navigation colorScheme={colorScheme} />
-      //   <StatusBar />
-      // </SafeAreaProvider>
-      <Container>
-        <Content>
-          <Swiper
-            loop = {false}
-            showsPagination = {false}
-            index = {0}
-            >
+      <View style = {{flex:1}}>
 
-            <View style = {styles.slideDefault}>
-              <Text style = {styles.text}>Camera</Text>
-            </View>
+        <View style = {{height:60}}>
+        {/* Header */}
 
-            <View style = {styles.slideDefault}>
-              <Text style = {styles.text}>Chat</Text>
-            </View>
+        </View>
 
-          </Swiper>
-        </Content>
-      </Container>
+        <View style = {{flex:1}}>
+        {/* Content View */}
+          <Animated.View style = {{height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute'}}>
+
+            {/* I cannot find a solution to this style error  */}
+            <Image 
+            // style = {{flex:1, height: null, width: null, resizeMode: 'cover', borderRadius: 20}} 
+            source = {Users[0].uri} />
+
+          </Animated.View>
+        </View>
+
+        <View style = {{height:60}}>
+        {/* Footer */}
+        </View>
+
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
