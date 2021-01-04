@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Dimensions, Image, Animated, PanResponder, AccessibilityInfo } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image, Animated, PanResponder } from 'react-native';
+// import PanResponder from 'universal-panresponder';
 import { SafeAreaProvider, withSafeAreaInsets } from 'react-native-safe-area-context';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -15,7 +16,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 //User photos, possibly props
-
 const Users = [
   { id: "1", uri: require('./assets/images/Ozzy-Osbourne.jpg')},
   { id: "2", uri: require('./assets/images/kerry-king-slayer.jpg')},
@@ -23,8 +23,40 @@ const Users = [
 ];
 
 
+//Need to figure out how to require in PanResponder, npm?
 export default class App extends React.Component {
-    
+  componentDidMount(){
+    this.PanResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (event,gestureState) => true,
+      onPanResponderMove: (event, gestureState) => {
+        //Will finish this function
+      },
+      onPanResponderRelease: (event, gestureState) => {
+        //Will finish this function
+      }
+    });
+  }
+
+
+  renderUsers() {
+    return Users.map((item, i) => {
+      return(
+        <Animated.View style={{height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute'}}>
+  
+          {/* I cannot find a solution to this style error  */}
+          <Image 
+            style = {{flex:1, height: null, width: null, resizeMode: 'cover', borderRadius: 20}} 
+            source = {item.uri} />
+  
+        </Animated.View>
+  
+      )
+
+    }).reverse();
+  }  
+
+
+
   render(){  
     return (
       <View style = {{flex:1}}>
@@ -36,14 +68,7 @@ export default class App extends React.Component {
 
         <View style = {{flex:1}}>
         {/* Content View */}
-          <Animated.View style = {{height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute'}}>
-
-            {/* I cannot find a solution to this style error  */}
-            <Image 
-            // style = {{flex:1, height: null, width: null, resizeMode: 'cover', borderRadius: 20}} 
-            source = {Users[0].uri} />
-
-          </Animated.View>
+          {this.renderUsers()};
         </View>
 
         <View style = {{height:60}}>
